@@ -1,0 +1,8 @@
+<resources>
+    <color name="decan_black">#030305</color>
+    <color name="decan_surface">#10151D</color>
+    <color name="decan_cyan">#00E5FF</color>
+    <color name="decan_white">#FFFFFF</color>
+    <color name="decan_muted">#9AA5B1</color>
+    <color name="decan_error">#FF5F6D</color>
+</resources>

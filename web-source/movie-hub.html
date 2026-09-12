@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050816">
+<title>Movie Universe — DECAN MOVIE</title>
+<style>
+:root{--bg:#050816;--panel:#0b1020;--line:rgba(255,255,255,.09);--text:#f5f7ff;--muted:#9ba7c4;--cyan:#20d9ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#12204a 0,#050816 45%);color:var(--text);font-family:Inter,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}.top{position:sticky;top:0;z-index:20;background:rgba(5,8,22,.86);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{max-width:1250px;margin:auto;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900;font-size:22px}.logo span{color:var(--cyan)}
+main{max-width:1250px;margin:auto;padding:34px 20px 60px}.hero h1{font-size:clamp(35px,6vw,60px);margin:8px 0}.hero p{color:var(--muted);max-width:800px;line-height:1.65}
+.controls{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin:22px 0}.controls input,.controls select{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#0b1020;color:white}
+.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:20px}.tabs button{white-space:nowrap;border:1px solid var(--line);background:#0b1020;color:white;border-radius:999px;padding:9px 13px;cursor:pointer}.tabs button.active{border-color:rgba(32,217,255,.45);color:var(--cyan)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:16px}.card{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer}.card:hover{border-color:rgba(32,217,255,.45);transform:translateY(-3px)}.card img{width:100%;height:255px;object-fit:cover}.info{padding:12px}.title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{font-size:12px;color:var(--muted);margin-top:5px}
+.panel{margin-top:22px;background:#090e1d;border:1px solid var(--line);border-radius:20px;padding:22px}.detail{display:grid;grid-template-columns:230px 1fr;gap:24px}.detail>img{width:100%;border-radius:15px}.muted{color:var(--muted);line-height:1.7}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid rgba(32,217,255,.2);color:#bdf5ff;background:rgba(32,217,255,.07);padding:6px 9px;border-radius:999px;font-size:12px}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}.mini img{width:100%;height:175px;object-fit:cover;border-radius:10px}.mini b{display:block;font-size:12px;margin-top:5px}.provider{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#0b1020}.provider img{width:38px;height:38px;border-radius:8px}.section{margin-top:26px}.season{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.loading,.empty{text-align:center;color:var(--muted);padding:40px}
+footer{text-align:center;border-top:1px solid var(--line);padding:28px;color:var(--muted);font-size:13px}
+@media(max-width:750px){.controls{grid-template-columns:1fr 1fr}.detail{grid-template-columns:120px 1fr}.card img{height:230px}}@media(max-width:480px){.controls,.detail{grid-template-columns:1fr}.detail>img{width:150px}}
+</style>
+</head>
+<body>
+<header class="top"><nav class="nav"><a class="logo" href="index.html">DECAN <span>MOVIE</span></a><a href="index.html">← Home</a></nav></header>
+<main>
+<section class="hero"><div style="color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:2px">MOVIE UNIVERSE</div><h1>Discover Everything.</h1><p>Advanced search, recommendations, rich movie and TV information, characters, collections, upcoming releases and legal viewing providers — while your existing streaming/player system stays untouched.</p></section>
+<div class="tabs">
+<button class="active" data-mode="search">Search</button><button data-mode="trending">Trending</button><button data-mode="upcoming">Upcoming</button><button data-mode="recommendations">For You</button>
+</div>
+<div class="controls">
+<input id="q" placeholder="Search movies, TV shows, actors, characters…">
+<select id="type"><option value="multi">Movies + TV + People</option><option value="movie">Movies</option><option value="tv">TV Shows</option><option value="person">People</option></select>
+<select id="year"><option value="">Any year</option></select>
+<select id="sort"><option value="popularity.desc">Most popular</option><option value="vote_average.desc">Highest rated</option><option value="primary_release_date.desc">Newest</option></select>
+</div>
+<section id="results" class="grid"><div class="loading">Search for something to begin.</div></section>
+<section id="detail" class="panel" style="display:none"></section>
+</main>
+<footer>© <span id="yearNow"></span> DECAN MOVIE. All rights reserved. Made with passion by Lenny Muriuki.</footer>
+<script>
+const API='/api/tmdb',IMG='https://image.tmdb.org/t/p/';
+const results=document.getElementById('results'),detail=document.getElementById('detail');
+let mode='search', timer;
+for(let y=new Date().getFullYear();y>=1950;y--)document.getElementById('year').insertAdjacentHTML('beforeend',`<option>${y}</option>`);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function get(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path',path);Object.entries(params).forEach(([k,v])=>{if(v!==''&&v!=null)u.searchParams.set(k,v)});const r=await fetch(u);if(!r.ok)throw Error('Request failed');return r.json()}
+function mediaType(x){return x.media_type||((x.first_air_date||x.number_of_seasons)?'tv':'movie')}
+function card(x){const t=x.title||x.name||'Untitled';const type=mediaType(x);if(type==='person')return `<article class="card" onclick="person(${x.id})"><img src="${x.profile_path?IMG+'w500'+x.profile_path:'https://via.placeholder.com/500x750/10172b/9ba7c4?text=Person'}"><div class="info"><div class="title">${esc(t)}</div><div class="meta">Actor / Creator</div></div></article>`;return `<article class="card" onclick="showDetail(${x.id},'${type}')"><img src="${x.poster_path?IMG+'w500'+x.poster_path:'https://via.placeholder.com/500x750/10172b/9ba7c4?text=No+Poster'}"><div class="info"><div class="title">${esc(t)}</div><div class="meta">⭐ ${Number(x.vote_average||0).toFixed(1)} • ${type.toUpperCase()}</div></div></article>`}
+function render(items){results.innerHTML=items.length?items.map(card).join(''):'<div class="empty">No results found.</div>'}
+async function run(){detail.style.display='none';results.innerHTML='<div class="loading">Loading…</div>';try{let d;
+if(mode==='trending')d=await get('/trending/all/week',{language:'en-US'});
+else if(mode==='upcoming')d=await get('/movie/upcoming',{language:'en-US',page:1});
+else if(mode==='recommendations'){const local=JSON.parse(localStorage.getItem('decan_history')||'[]');const seed=local[0];d=seed?await get('/movie/'+seed.id+'/recommendations',{language:'en-US',page:1}):await get('/trending/movie/week',{language:'en-US'});}
+else {const q=document.getElementById('q').value.trim();if(!q){results.innerHTML='<div class="empty">Enter a movie, TV show, actor or character name.</div>';return}d=await get('/search/'+document.getElementById('type').value,{query:q,language:'en-US',page:1,include_adult:false});}
+render((d.results||[]).filter(x=>!document.getElementById('year').value||String((x.release_date||x.first_air_date||'').slice(0,4))===document.getElementById('year').value));}catch(e){results.innerHTML='<div class="empty">Could not load results.</div>'}}
+async function showDetail(id,type){detail.style.display='block';detail.innerHTML='<div class="loading">Loading details…</div>';detail.scrollIntoView({behavior:'smooth'});try{
+const d=await get('/'+type+'/'+id,{language:'en-US',append_to_response:'credits,videos,images'});
+const title=d.title||d.name, date=d.release_date||d.first_air_date||'';
+let providers={};try{providers=await get('/'+type+'/'+id+'/watch/providers',{});}catch(e){}
+const region=providers.results?.KE||providers.results?.US||Object.values(providers.results||{})[0]||{};
+const prov=[...(region.flatrate||[]),...(region.rent||[]),...(region.buy||[])];
+const rec=await get('/'+type+'/'+id+'/recommendations',{language:'en-US',page:1}).catch(()=>({results:[]}));
+let seasons='';
+if(type==='tv'&&d.seasons)seasons=`<div class="section"><h3>Seasons & Episodes</h3>${d.seasons.filter(s=>s.season_number>0).map(s=>`<div class="season"><b>Season ${s.season_number}</b> — ${s.episode_count||0} episodes — ${esc(s.name||'')}</div>`).join('')}<p class="muted">Open this title in the main Movie Box to use the existing episode/player system.</p></div>`;
+detail.innerHTML=`<div class="detail"><img src="${d.poster_path?IMG+'w500'+d.poster_path:'https://via.placeholder.com/500x750/10172b/9ba7c4?text=No+Poster'}"><div><h2>${esc(title)}</h2><div class="chips"><span class="chip">⭐ ${Number(d.vote_average||0).toFixed(1)}</span><span class="chip">${esc(date||'Release unknown')}</span><span class="chip">${esc(d.runtime?d.runtime+' min':(d.episode_run_time?.[0]?d.episode_run_time[0]+' min':''))}</span></div><p class="muted">${esc(d.overview||'No overview available.')}</p><p><a style="color:var(--cyan)" href="index.html?id=${id}&title=${type}">▶ Open in Movie Box / existing player</a></p></div></div>
+<div class="section"><h3>Cast</h3><div class="mini-grid">${(d.credits?.cast||[]).slice(0,12).map(p=>`<div class="mini"><img src="${p.profile_path?IMG+'w185'+p.profile_path:'https://via.placeholder.com/185x278/10172b/9ba7c4?text=Person'}"><b>${esc(p.name)}</b></div>`).join('')}</div></div>
+<div class="section"><h3>Where to Watch</h3>${prov.length?`<div class="mini-grid">${prov.map(p=>`<div class="provider"><img src="${p.logo_path?IMG+'w92'+p.logo_path:'https://via.placeholder.com/92'}"><span>${esc(p.provider_name)}</span></div>`).join('')}</div>`:'<p class="muted">No provider information is available for the selected region.</p>'}</div>
+${seasons}
+<div class="section"><h3>Recommended / Similar</h3><div class="mini-grid">${(rec.results||[]).slice(0,10).map(x=>`<div class="mini" onclick="showDetail(${x.id},'${type}')"><img src="${x.poster_path?IMG+'w342'+x.poster_path:'https://via.placeholder.com/342x513/10172b/9ba7c4?text=No+Poster'}"><b>${esc(x.title||x.name)}</b></div>`).join('')}</div></div>`;
+}catch(e){detail.innerHTML='<div class="empty">Unable to load details.</div>'}}
+async function person(id){detail.style.display='block';detail.innerHTML='<div class="loading">Loading person…</div>';detail.scrollIntoView({behavior:'smooth'});try{const p=await get('/person/'+id,{language:'en-US',append_to_response:'combined_credits'});const credits=(p.combined_credits?.cast||[]).filter(x=>x.poster_path);detail.innerHTML=`<div class="detail"><img src="${p.profile_path?IMG+'w500'+p.profile_path:'https://via.placeholder.com/500x750/10172b/9ba7c4?text=Person'}"><div><h2>${esc(p.name)}</h2><div class="chips"><span class="chip">${credits.length} known credits</span><span class="chip">${esc(p.known_for_department||'Entertainment')}</span></div><p class="muted">${esc(p.biography||'Biography unavailable.')}</p></div></div><div class="section"><h3>Movie & TV Stories</h3><div class="mini-grid">${credits.slice(0,24).map(x=>`<div class="mini" onclick="showDetail(${x.id},'${mediaType(x)}')"><img src="${IMG+'w342'+x.poster_path}"><b>${esc(x.title||x.name)}</b></div>`).join('')}</div></div>`}catch(e){detail.innerHTML='<div class="empty">Person information unavailable.</div>'}}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');mode=b.dataset.mode;run()});
+document.getElementById('q').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(run,450)});
+document.getElementById('type').onchange=run;document.getElementById('year').onchange=run;document.getElementById('sort').onchange=run;
+document.getElementById('yearNow').textContent=new Date().getFullYear();
+</script>
+</body></html>

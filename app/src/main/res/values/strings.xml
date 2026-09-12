@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Decan Movie</string>
+    <string name="app_subtitle">Your cinema. Your world.</string>
+    <string name="reload">Reload</string>
+    <string name="back">Back</string>
+    <string name="forward">Forward</string>
+    <string name="home">Home</string>
+    <string name="account">Account</string>
+    <string name="more">More</string>
+    <string name="offline_title">You are offline</string>
+    <string name="offline_message">Check your internet connection and try again.</string>
+    <string name="retry">Try again</string>
+    <string name="loading">Loading Decan Movie…</string>
+</resources>

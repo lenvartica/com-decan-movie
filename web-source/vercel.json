@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "functions": {
+    "api/tmdb.js": {
+      "maxDuration": 30
+    },
+    "api/sitemap.js": {
+      "maxDuration": 30
+    },
+    "api/seo.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/characters",
+      "destination": "/characters.html"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/movie/:slug",
+      "destination": "/api/seo?type=movie&slug=:slug"
+    },
+    {
+      "source": "/tv/:slug",
+      "destination": "/api/seo?type=tv&slug=:slug"
+    },
+    {
+      "source": "/api/tmdb/:path*",
+      "destination": "/api/tmdb?path=/:path*"
+    }
+  ]
+}
