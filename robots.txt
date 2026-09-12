@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /account.html
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /config.php
+Disallow: /tmdb-proxy.php
+Disallow: /.env
+
+Sitemap: https://decan-konnect-movie.vercel.app/sitemap.xml

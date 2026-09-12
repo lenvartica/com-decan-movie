@@ -1,0 +1,38 @@
+name: Decan Movie Unsigned Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  JAVA_VERSION: '17'
+  GRADLE_VERSION: '8.9'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
+      - name: Build release outputs
+        run: gradle --no-daemon --stacktrace assembleRelease bundleRelease
+      - name: Upload unsigned outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: decan-movie-unsigned-release
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error

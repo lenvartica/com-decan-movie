@@ -1,0 +1,8 @@
+# Keep the existing website working while protecting the server-side secret.
+
+<FilesMatch "^(config\.php|\.env|\.env\..*)$">
+    Require all denied
+</FilesMatch>
+
+# Prevent directory listing if the hosting account has it enabled.
+Options -Indexes

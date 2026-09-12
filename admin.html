@@ -1,0 +1,1969 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decan Movie — Admin Dashboard</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{
+--bg:#0b0e13;
+--card:#151a22;
+--card2:#10151d;
+--muted:#8991a3;
+--text:#f5f7fb;
+--cyan:#00e5ff;
+--pink:#ff007f;
+--green:#00ffaa;
+--yellow:#ffb703;
+--red:#ff4d6d;
+--border:rgba(255,255,255,.08);
+--shadow:0 20px 60px rgba(0,0,0,.35);
+}
+*{
+box-sizing:border-box;
+}
+html{
+scroll-behavior:smooth;
+}
+body{
+margin:0;
+background:
+radial-gradient(circle at top left,rgba(0,229,255,.08),transparent 30%),
+radial-gradient(circle at top right,rgba(255,0,127,.07),transparent 30%),
+var(--bg);
+color:var(--text);
+font-family:Inter,Segoe UI,Arial,sans-serif;
+min-height:100vh;
+}
+button,
+input,
+select{
+font:inherit;
+}
+button{
+border:1px solid var(--border);
+background:rgba(21,26,34,.85);
+color:#fff;
+border-radius:10px;
+padding:10px 13px;
+cursor:pointer;
+font-weight:800;
+transition:.2s ease;
+}
+button:hover{
+border-color:var(--cyan);
+transform:translateY(-1px);
+}
+button:disabled{
+opacity:.5;
+cursor:not-allowed;
+transform:none;
+}
+.wrap{
+max-width:1450px;
+margin:auto;
+padding:24px;
+}
+.top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+.brand{
+font-size:1.4rem;
+font-weight:900;
+letter-spacing:.3px;
+}
+.brand span{
+color:var(--cyan);
+}
+.subtitle{
+color:var(--muted);
+margin-top:5px;
+}
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+.card{
+background:
+linear-gradient(
+135deg,
+rgba(255,255,255,.045),
+rgba(255,255,255,.015)
+);
+border:1px solid var(--border);
+border-radius:16px;
+padding:17px;
+box-shadow:var(--shadow);
+backdrop-filter:blur(16px);
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+}
+.stat{
+min-height:105px;
+}
+.stat small{
+color:var(--muted);
+font-size:.78rem;
+}
+.stat strong{
+display:block;
+font-size:1.8rem;
+margin-top:8px;
+}
+.cyan{
+color:var(--cyan);
+}
+.yellow{
+color:var(--yellow);
+}
+.green{
+color:var(--green);
+}
+.pink{
+color:var(--pink);
+}
+.red{
+color:var(--red);
+}
+.section{
+margin-top:16px;
+}
+.section h2{
+font-size:1rem;
+margin:0 0 12px;
+}
+.two{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+.table-wrap{
+overflow:auto;
+}
+.table{
+width:100%;
+border-collapse:collapse;
+min-width:900px;
+}
+.table th,
+.table td{
+padding:12px 9px;
+border-bottom:1px solid rgba(255,255,255,.06);
+text-align:left;
+font-size:.82rem;
+vertical-align:middle;
+}
+.table th{
+color:var(--muted);
+font-weight:700;
+}
+.badge{
+display:inline-flex;
+align-items:center;
+gap:4px;
+padding:5px 8px;
+border-radius:999px;
+background:rgba(0,229,255,.08);
+color:var(--cyan);
+font-size:.7rem;
+font-weight:800;
+white-space:nowrap;
+}
+.badge.pending{
+color:var(--yellow);
+background:rgba(255,183,3,.08);
+}
+.badge.suspended{
+color:var(--pink);
+background:rgba(255,0,127,.08);
+}
+.badge.verified{
+color:var(--green);
+background:rgba(0,255,170,.08);
+}
+.badge.owner{
+color:var(--yellow);
+background:rgba(255,183,3,.12);
+}
+.empty{
+color:var(--muted);
+padding:25px;
+text-align:center;
+}
+.login{
+max-width:440px;
+margin:12vh auto;
+}
+.login .card{
+padding:25px;
+}
+.field{
+width:100%;
+padding:12px;
+margin-top:9px;
+background:rgba(14,17,23,.9);
+color:#fff;
+border:1px solid var(--border);
+border-radius:10px;
+outline:0;
+}
+.field:focus{
+border-color:var(--cyan);
+box-shadow:0 0 0 3px rgba(0,229,255,.08);
+}
+.login-button{
+margin-top:13px;
+width:100%;
+background:linear-gradient(
+135deg,
+rgba(0,229,255,.18),
+rgba(0,229,255,.05)
+);
+}
+.login-status{
+min-height:22px;
+margin-top:12px;
+font-size:.85rem;
+}
+.error{
+color:#ff668f;
+}
+.success{
+color:var(--green);
+}
+.warning{
+color:var(--yellow);
+}
+.hidden{
+display:none!important;
+}
+.loading{
+opacity:.7;
+pointer-events:none;
+}
+.owner-card{
+border-color:rgba(255,183,3,.25);
+background:
+linear-gradient(
+135deg,
+rgba(255,183,3,.08),
+rgba(255,255,255,.02)
+);
+}
+.status-line{
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+}
+.online-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--green);
+box-shadow:0 0 12px var(--green);
+display:inline-block;
+}
+.small-button{
+padding:7px 9px;
+font-size:.75rem;
+}
+.user-actions{
+display:flex;
+gap:5px;
+flex-wrap:wrap;
+}
+.request-item{
+padding:11px 0;
+border-bottom:1px solid rgba(255,255,255,.06);
+}
+.request-item:last-child{
+border-bottom:0;
+}
+.request-title{
+font-weight:800;
+}
+.request-meta{
+color:var(--muted);
+font-size:.74rem;
+margin-top:4px;
+line-height:1.5;
+}
+.section-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:16px;
+}
+.permission-card{
+min-height:110px;
+}
+.permission-title{
+font-weight:800;
+margin-bottom:7px;
+}
+.permission-value{
+color:var(--green);
+font-size:.85rem;
+}
+@media(max-width:1100px){
+.grid{
+grid-template-columns:repeat(3,1fr);
+}
+.section-grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+@media(max-width:850px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+.two{
+grid-template-columns:1fr;
+}
+}
+@media(max-width:550px){
+.wrap{
+padding:14px;
+}
+.grid{
+grid-template-columns:1fr;
+}
+.section-grid{
+grid-template-columns:1fr;
+}
+.stat strong{
+font-size:1.5rem;
+}
+.top{
+align-items:flex-start;
+}
+.actions{
+width:100%;
+}
+.actions button{
+flex:1;
+}
+}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="wrap login">
+<div class="card owner-card">
+<div class="brand">DECAN <span>MOVIE</span> / ADMIN</div>
+
+<p style="color:var(--muted);line-height:1.6">
+Administrator access is protected by Supabase Authentication.
+Sign in with your administrator account.
+</p>
+
+<input
+id="email"
+class="field"
+type="email"
+autocomplete="username"
+placeholder="Admin email"
+>
+
+<input
+id="password"
+class="field"
+type="password"
+autocomplete="current-password"
+placeholder="Password"
+>
+
+<button
+id="loginButton"
+class="login-button"
+onclick="adminLogin()"
+>
+Sign In
+</button>
+
+<div id="loginStatus" class="login-status"></div>
+</div>
+</div>
+
+<div id="app" class="wrap hidden">
+
+<div class="top">
+
+<div>
+<div class="brand">
+DECAN <span>MOVIE</span> / ADMIN
+</div>
+
+<div class="subtitle">
+<span class="online-dot"></span>
+Live platform administration
+</div>
+</div>
+
+<div class="actions">
+
+<button onclick="location.href='index.html'">
+← Movie Site
+</button>
+
+<button onclick="refreshAll()">
+↻ Refresh
+</button>
+
+<button onclick="logout()">
+Sign Out
+</button>
+
+</div>
+
+</div>
+
+<div
+id="status"
+class="card"
+style="margin-bottom:12px"
+>
+Loading dashboard…
+</div>
+
+<div
+id="ownerBanner"
+class="card owner-card"
+style="margin-bottom:12px"
+>
+<div class="status-line">
+<span class="badge owner">SUPER ADMIN</span>
+<strong id="adminIdentity">Administrator</strong>
+</div>
+
+<div
+id="adminPermissionText"
+style="color:var(--muted);margin-top:7px;font-size:.84rem"
+>
+Full administrative access
+</div>
+</div>
+
+<div id="stats" class="grid"></div>
+
+<div class="two section">
+
+<div class="card">
+<h2>🔥 Top Watched Today</h2>
+<div id="topWatched"></div>
+</div>
+
+<div class="card">
+<h2>📨 Latest Requests</h2>
+<div id="requests"></div>
+</div>
+
+</div>
+
+<div class="card section">
+<h2>👥 Users</h2>
+<div class="table-wrap">
+<div id="users"></div>
+</div>
+</div>
+
+
+<div class="two section">
+<div class="card">
+<h2>🔔 Send Notification</h2>
+<div class="field-label">User ID</div>
+<input id="notifyUserId" class="field" placeholder="Leave blank to send to everyone">
+<input id="notifyTitle" class="field" placeholder="Notification title">
+<textarea id="notifyMessage" class="field" rows="4" placeholder="Message"></textarea>
+<div class="actions" style="margin-top:10px">
+<button onclick="sendAdminNotification()">Send Notification</button>
+<button onclick="broadcastAdminNotification()">Send To All Active Users</button>
+</div>
+<div id="notifyStatus" class="login-status"></div>
+</div>
+<div class="card">
+<h2>🛠 Reports</h2>
+<div id="reports"></div>
+</div>
+</div>
+
+<div class="card section">
+<h2>📈 Real View Analytics</h2>
+<div id="analytics"></div>
+</div>
+<div class="section-grid">
+
+<div class="card permission-card">
+<div class="permission-title">🎬 Movies</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">🔥 Trending</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">📰 News</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">✍️ Blogs</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">🪙 Coins</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">🛡️ Verification</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">👑 Roles</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">🔔 Notifications</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">📊 Analytics</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">📋 Admin Logs</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">📝 Requests</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+<div class="card permission-card">
+<div class="permission-title">⚙️ Settings</div>
+<div class="permission-value">Full Access</div>
+</div>
+
+</div>
+
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+let sb=null;
+let me=null;
+let adminRole=null;
+let adminPermissions={};
+let booting=false;
+
+const SUPER_ADMIN_ID="f41e88f9-9abd-431e-be16-99ab0a671d2b";
+
+const cfg=window.DECAN_SUPABASE_CONFIG||{};
+
+const configured=Boolean(
+cfg.url &&
+cfg.anonKey &&
+!String(cfg.url).includes("YOUR-PROJECT") &&
+!String(cfg.anonKey).includes("YOUR_SUPABASE")
+);
+
+function $(id){
+return document.getElementById(id);
+}
+
+function esc(value){
+return String(value??"").replace(
+/[&<>"']/g,
+function(char){
+return {
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[char];
+}
+);
+}
+
+function loginMessage(text,type=""){
+const element=$("loginStatus");
+if(!element)return;
+element.textContent=text;
+element.className="login-status "+type;
+}
+
+function dashboardMessage(text,type=""){
+const element=$("status");
+if(!element)return;
+element.textContent=text;
+element.className="card "+type;
+}
+
+function isSuperAdmin(userId){
+return String(userId||"")===SUPER_ADMIN_ID;
+}
+
+function hasPermission(permission){
+if(isSuperAdmin(me?.id)){
+return true;
+}
+
+if(adminRole==="super_admin"){
+return true;
+}
+
+if(adminRole!=="admin"){
+return false;
+}
+
+return Boolean(
+adminPermissions &&
+adminPermissions[permission]===true
+);
+}
+
+function setLoginLoading(state){
+const button=$("loginButton");
+const email=$("email");
+const password=$("password");
+
+if(button){
+button.disabled=state;
+button.textContent=state?"Signing In…":"Sign In";
+}
+
+if(email){
+email.disabled=state;
+}
+
+if(password){
+password.disabled=state;
+}
+}
+
+function initializeSupabase(){
+if(!configured){
+loginMessage(
+"Supabase is not configured. Check supabase-config.js.",
+"error"
+);
+return false;
+}
+
+if(
+!window.supabase ||
+typeof window.supabase.createClient!=="function"
+){
+loginMessage(
+"Supabase library failed to load.",
+"error"
+);
+return false;
+}
+
+try{
+sb=window.supabase.createClient(
+cfg.url,
+cfg.anonKey,
+{
+auth:{
+persistSession:true,
+autoRefreshToken:true,
+detectSessionInUrl:true
+}
+}
+);
+
+return true;
+}catch(error){
+console.error(error);
+loginMessage(
+error.message||"Unable to initialize Supabase.",
+"error"
+);
+return false;
+}
+}
+
+async function adminLogin(){
+if(!sb){
+loginMessage(
+"Supabase is not initialized.",
+"error"
+);
+return;
+}
+
+const email=$("email").value.trim();
+const password=$("password").value;
+
+if(!email){
+loginMessage(
+"Enter your administrator email.",
+"error"
+);
+return;
+}
+
+if(!password){
+loginMessage(
+"Enter your password.",
+"error"
+);
+return;
+}
+
+setLoginLoading(true);
+loginMessage("Signing in…");
+
+try{
+
+const result=await sb.auth.signInWithPassword({
+email:email,
+password:password
+});
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+console.error(
+"Supabase login error:",
+error
+);
+
+loginMessage(
+error.message||"Unable to sign in.",
+"error"
+);
+
+setLoginLoading(false);
+return;
+}
+
+if(!data?.user){
+loginMessage(
+"Authentication succeeded but no user was returned.",
+"error"
+);
+
+setLoginLoading(false);
+return;
+}
+
+await boot(data.user);
+
+}catch(error){
+
+console.error(
+"Unexpected login error:",
+error
+);
+
+loginMessage(
+error.message||"Unexpected authentication error.",
+"error"
+);
+
+}finally{
+setLoginLoading(false);
+}
+}
+
+async function boot(user){
+
+if(!user){
+loginMessage(
+"No authenticated user was found.",
+"error"
+);
+return false;
+}
+
+if(booting){
+return false;
+}
+
+booting=true;
+me=user;
+
+try{
+
+if(isSuperAdmin(user.id)){
+
+adminRole="super_admin";
+
+adminPermissions={
+users:true,
+verification:true,
+roles:true,
+movies:true,
+trending:true,
+news:true,
+blogs:true,
+notifications:true,
+coins:true,
+coin_gifts:true,
+analytics:true,
+settings:true,
+admin_logs:true,
+requests:true,
+content:true,
+support:true
+};
+
+openDashboard();
+
+$("adminIdentity").textContent=
+user.email||
+"Main Super Admin";
+
+$("adminPermissionText").textContent=
+"Main Super Admin • Full platform access";
+
+await refreshAll();
+
+return true;
+}
+
+const result=await sb
+.from("user_roles")
+.select(
+"user_id,role,permissions"
+)
+.eq(
+"user_id",
+user.id
+)
+.maybeSingle();
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+
+console.error(
+"Role lookup error:",
+error
+);
+
+await sb.auth.signOut();
+
+me=null;
+
+loginMessage(
+"Unable to verify administrator role: "+
+error.message,
+"error"
+);
+
+return false;
+}
+
+if(!data){
+
+await sb.auth.signOut();
+
+me=null;
+
+loginMessage(
+"This account is authenticated but has no administrator role.",
+"error"
+);
+
+return false;
+}
+
+const allowedRoles=[
+"admin",
+"super_admin"
+];
+
+if(!allowedRoles.includes(data.role)){
+
+await sb.auth.signOut();
+
+me=null;
+
+loginMessage(
+"This account is not an administrator.",
+"error"
+);
+
+return false;
+}
+
+adminRole=data.role;
+adminPermissions=data.permissions||{};
+
+if(adminRole==="super_admin"){
+
+adminPermissions={
+...adminPermissions,
+users:true,
+verification:true,
+roles:true,
+movies:true,
+trending:true,
+news:true,
+blogs:true,
+notifications:true,
+coins:true,
+coin_gifts:true,
+analytics:true,
+settings:true,
+admin_logs:true,
+requests:true,
+content:true,
+support:true
+};
+
+}
+
+openDashboard();
+
+$("adminIdentity").textContent=
+user.email||
+"Administrator";
+
+$("adminPermissionText").textContent=
+adminRole==="super_admin"
+?"Super Admin • Full platform access"
+:"Administrator • Permission-based access";
+
+await refreshAll();
+
+return true;
+
+}catch(error){
+
+console.error(
+"Administrator boot error:",
+error
+);
+
+loginMessage(
+error.message||
+"Unable to initialize administrator dashboard.",
+"error"
+);
+
+return false;
+
+}finally{
+booting=false;
+}
+}
+
+function openDashboard(){
+
+$("loginView")
+.classList
+.add("hidden");
+
+$("app")
+.classList
+.remove("hidden");
+
+dashboardMessage(
+"Administrator authenticated. Loading dashboard…"
+);
+}
+
+async function refreshAll(){
+
+dashboardMessage(
+"Refreshing live data…"
+);
+
+try{
+await loadStats();
+}catch(error){
+console.error(
+"Statistics error:",
+error
+);
+}
+
+try{
+await Promise.all([
+loadTop(),
+loadRequests(),
+loadUsers(),
+loadReports(),
+loadAnalytics()
+]);
+}catch(error){
+console.error(
+"Dashboard loading error:",
+error
+);
+}
+
+dashboardMessage(
+"Dashboard updated • "+
+new Date().toLocaleString(),
+"success"
+);
+}
+
+async function loadStats(){
+
+const result=await sb.rpc(
+"admin_dashboard_stats"
+);
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+
+console.error(
+"Dashboard statistics error:",
+error
+);
+
+renderFallbackStats();
+
+return;
+}
+
+renderStats(
+data||{}
+);
+}
+
+function renderStats(stats){
+
+const values=[
+["Users",stats.total_users,"cyan"],
+["New Users Today",stats.users_today,"green"],
+["Visitors Today",stats.visitors_today,"cyan"],
+["Visits Today",stats.visits_today,"cyan"],
+["Ratings",stats.ratings,"yellow"],
+["Rating Users",stats.rating_users,"yellow"],
+["Coins In Circulation",stats.coins,"yellow"],
+["Watch Events Today",stats.watch_events_today,"pink"],
+["Real Views Today",stats.real_views_today,"cyan"],
+["Open Reports",stats.open_reports,"pink"],
+["Pending Requests",stats.pending_requests,"pink"],
+["All Requests",stats.total_requests,"pink"]
+];
+
+$("stats").innerHTML=values.map(
+function(item){
+return `
+<div class="card stat">
+<small>${esc(item[0])}</small>
+<strong class="${esc(item[2])}">
+${Number(item[1]||0).toLocaleString()}
+</strong>
+</div>
+`;
+}
+).join("");
+}
+
+function renderFallbackStats(){
+
+$("stats").innerHTML=`
+<div class="card stat">
+<small>Users</small>
+<strong class="cyan">—</strong>
+</div>
+<div class="card stat">
+<small>New Users Today</small>
+<strong class="green">—</strong>
+</div>
+<div class="card stat">
+<small>Visitors Today</small>
+<strong class="cyan">—</strong>
+</div>
+<div class="card stat">
+<small>Visits Today</small>
+<strong class="cyan">—</strong>
+</div>
+<div class="card stat">
+<small>Ratings</small>
+<strong class="yellow">—</strong>
+</div>
+<div class="card stat">
+<small>Rating Users</small>
+<strong class="yellow">—</strong>
+</div>
+<div class="card stat">
+<small>Coins In Circulation</small>
+<strong class="yellow">—</strong>
+</div>
+<div class="card stat">
+<small>Watch Events Today</small>
+<strong class="pink">—</strong>
+</div>
+<div class="card stat">
+<small>Pending Requests</small>
+<strong class="pink">—</strong>
+</div>
+<div class="card stat">
+<small>All Requests</small>
+<strong class="pink">—</strong>
+</div>
+`;
+}
+
+async function loadTop(){
+
+const element=$("topWatched");
+
+const result=await sb.rpc(
+"top_watched_public",
+{limit_count:12}
+);
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+
+element.innerHTML=`
+<div class="empty">
+${esc(error.message)}
+</div>
+`;
+
+return;
+}
+
+if(!data||!data.length){
+
+element.innerHTML=`
+<div class="empty">
+No watches recorded today yet.
+</div>
+`;
+
+return;
+}
+
+element.innerHTML=data.map(
+function(item,index){
+
+return `
+<div class="request-item">
+<div style="
+display:flex;
+justify-content:space-between;
+gap:10px;
+">
+<span>
+${index+1}.
+${esc(
+item.title||
+("Movie #"+item.movie_id)
+)}
+</span>
+<b>
+${Number(item.watches||0)}
+plays
+</b>
+</div>
+</div>
+`;
+}
+).join("");
+}
+
+async function loadRequests(){
+
+const element=$("requests");
+
+const result=await sb
+.from("movie_requests")
+.select(
+"id,title,year,media_type,status,requester_name,created_at"
+)
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(12);
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+
+element.innerHTML=`
+<div class="empty">
+${esc(error.message)}
+</div>
+`;
+
+return;
+}
+
+if(!data||!data.length){
+
+element.innerHTML=`
+<div class="empty">
+No requests yet.
+</div>
+`;
+
+return;
+}
+
+element.innerHTML=data.map(
+function(item){
+
+const status=item.status||"pending";
+
+return `
+<div class="request-item">
+
+<div class="request-title">
+${esc(item.title)}
+${item.year?" ("+esc(item.year)+")":""}
+</div>
+
+<div class="request-meta">
+${esc(item.media_type||"movie")}
+•
+${esc(item.requester_name||"Guest")}
+•
+${item.created_at
+?new Date(item.created_at).toLocaleString()
+:""
+}
+</div>
+
+<select
+class="field"
+style="margin-top:7px"
+onchange="setRequestStatus(${Number(item.id)},this.value)"
+>
+
+<option value="pending"
+${status==="pending"?"selected":""}>
+pending
+</option>
+
+<option value="reviewing"
+${status==="reviewing"?"selected":""}>
+reviewing
+</option>
+
+<option value="approved"
+${status==="approved"?"selected":""}>
+approved
+</option>
+
+<option value="rejected"
+${status==="rejected"?"selected":""}>
+rejected
+</option>
+
+<option value="completed"
+${status==="completed"?"selected":""}>
+completed
+</option>
+
+</select>
+
+</div>
+`;
+}
+).join("");
+}
+
+async function setRequestStatus(
+id,
+status
+){
+
+if(!hasPermission("requests")){
+
+alert(
+"You do not have permission to manage requests."
+);
+
+return;
+}
+
+const result=await sb
+.from("movie_requests")
+.update({
+status:status,
+updated_at:new Date().toISOString()
+})
+.eq("id",id);
+
+const error=result.error;
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadRequests();
+}
+
+async function loadUsers(){
+
+const element=$("users");
+
+const result=await sb.rpc(
+"admin_users",
+{
+limit_count:150
+}
+);
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+
+element.innerHTML=`
+<div class="empty">
+${esc(error.message)}
+</div>
+`;
+
+return;
+}
+
+const users=data||[];
+
+if(!users.length){
+
+element.innerHTML=`
+<div class="empty">
+No users found.
+</div>
+`;
+
+return;
+}
+
+element.innerHTML=`
+<table class="table">
+
+<thead>
+
+<tr>
+<th>User</th>
+<th>Role</th>
+<th>Status</th>
+<th>Verification</th>
+<th>Coins</th>
+<th>XP</th>
+<th>Joined</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+${users.map(
+function(user){
+
+const owner=
+user.id===SUPER_ADMIN_ID;
+
+const currentStatus=
+user.status||"active";
+
+const verification=
+user.verification_status||
+"unverified";
+
+return `
+<tr>
+
+<td>
+
+<b>
+${esc(
+user.display_name||
+user.username||
+"User"
+)}
+</b>
+
+<br>
+
+<span style="
+color:var(--muted)
+">
+${esc(user.email||"")}
+</span>
+
+</td>
+
+<td>
+
+<span class="badge">
+${esc(user.role||"user")}
+</span>
+
+</td>
+
+<td>
+
+<span class="
+badge
+${currentStatus==="suspended"?"suspended":""}
+">
+
+${esc(currentStatus)}
+
+</span>
+
+</td>
+
+<td>
+
+<span class="
+badge
+${verification==="verified"?"verified":""}
+">
+
+${esc(verification)}
+
+</span>
+
+</td>
+
+<td>
+${Number(
+user.coins||0
+).toLocaleString()}
+</td>
+
+<td>
+${Number(
+user.xp||0
+).toLocaleString()}
+</td>
+
+<td>
+${user.created_at
+?new Date(
+user.created_at
+).toLocaleDateString()
+:"—"}
+</td>
+
+<td>
+
+<div class="user-actions">
+
+${
+owner
+
+?
+
+`
+<span class="badge owner">
+MAIN SUPER ADMIN
+</span>
+`
+
+:
+
+`
+
+<button
+class="small-button"
+onclick="
+adjustCoins(
+'${esc(user.id)}',
+1
+)
+"
+>
++1 🪙
+</button>
+
+<button
+class="small-button"
+onclick="
+adjustCoins(
+'${esc(user.id)}',
+-1
+)
+"
+>
+-1 🪙
+</button>
+
+<button
+class="small-button"
+onclick="
+setUserStatus(
+'${esc(user.id)}',
+'${currentStatus==="active"?"suspended":"active"}'
+)
+"
+>
+${
+currentStatus==="active"
+?"Suspend"
+:"Activate"
+}
+</button>
+
+<button
+class="small-button"
+onclick="
+giftCoins(
+'${esc(user.id)}'
+)
+"
+>
+Gift 🪙
+</button>
+
+<button
+class="small-button"
+onclick="
+setUserRole(
+'${esc(user.id)}',
+'${user.role==="admin"?"user":"admin"}'
+)
+>
+${user.role==="admin"?"Make User":"Make Admin"}
+</button>
+
+<button
+class="small-button"
+onclick="
+setVerification(
+'${esc(user.id)}',
+'${verification==="verified"?"unverified":"verified"}'
+)
+>
+${verification==="verified"?"Unverify":"Verify"}
+</button>
+
+<button
+class="small-button"
+onclick="
+prepareUserNotification(
+'${esc(user.id)}',
+'${esc(user.display_name||user.username||user.email||"User")}'
+)
+>
+Notify
+</button>
+
+`
+
+}
+
+</div>
+
+</td>
+
+</tr>
+`;
+}
+).join("")}
+
+</tbody>
+
+</table>
+`;
+}
+
+async function adjustCoins(
+id,
+amount
+){
+
+if(!hasPermission("coins")){
+
+alert(
+"You do not have permission to manage coins."
+);
+
+return;
+}
+
+if(
+id===SUPER_ADMIN_ID&&
+amount<0
+){
+
+alert(
+"The Main Super Admin cannot have coins removed through this action."
+);
+
+return;
+}
+
+const reason=prompt(
+"Reason for coin adjustment?",
+amount>0
+?"Admin gift"
+:"Admin adjustment"
+);
+
+if(reason===null){
+return;
+}
+
+const result=await sb.rpc(
+"admin_adjust_coins",
+{
+target_user:id,
+amount:amount,
+reason:reason
+}
+);
+
+const error=result.error;
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await refreshAll();
+}
+
+async function setUserStatus(
+id,
+status
+){
+
+if(id===SUPER_ADMIN_ID){
+
+alert(
+"The Main Super Admin cannot be suspended."
+);
+
+return;
+}
+
+if(!hasPermission("users")){
+
+alert(
+"You do not have permission to manage users."
+);
+
+return;
+}
+
+if(!confirm(
+"Set this user to "+
+status+
+"?"
+)){
+return;
+}
+
+const result=await sb.rpc(
+"admin_set_user_status",
+{
+target_user:id,
+new_status:status
+}
+);
+
+const error=result.error;
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadUsers();
+}
+
+
+async function loadReports(){
+const element=$("reports");
+const result=await sb.from("support_reports").select("*").order("created_at",{ascending:false}).limit(20);
+if(result.error){element.innerHTML=`<div class="empty">${esc(result.error.message)}</div>`;return;}
+const rows=result.data||[];
+if(!rows.length){element.innerHTML='<div class="empty">No reports yet.</div>';return;}
+element.innerHTML=rows.map(r=>`
+<div class="request-item">
+<div class="request-title">${esc(r.subject)}</div>
+<div class="request-meta">${esc(r.category)} • ${esc(r.priority)} • ${esc(r.reporter_name||r.reporter_email||"Guest")} • ${r.created_at?new Date(r.created_at).toLocaleString():""}</div>
+<div class="request-meta">${esc(r.message)}</div>
+<select class="field" onchange="updateReport(${Number(r.id)},this.value)">
+<option value="open" ${r.status==="open"?"selected":""}>open</option>
+<option value="in_progress" ${r.status==="in_progress"?"selected":""}>in progress</option>
+<option value="resolved" ${r.status==="resolved"?"selected":""}>resolved</option>
+<option value="closed" ${r.status==="closed"?"selected":""}>closed</option>
+</select>
+</div>`).join("");
+}
+
+async function updateReport(id,status){
+if(!hasPermission("support")){alert("You do not have permission to manage reports.");return;}
+const result=await sb.rpc("admin_update_report",{report_id:id,new_status:status});
+if(result.error)alert(result.error.message);
+else await loadReports();
+}
+
+async function sendAdminNotification(){
+if(!hasPermission("notifications")){alert("You do not have permission to send notifications.");return;}
+const userId=$("notifyUserId").value.trim();
+const title=$("notifyTitle").value.trim();
+const message=$("notifyMessage").value.trim();
+if(!title||!message){$("notifyStatus").textContent="Title and message are required.";return;}
+if(!userId){return broadcastAdminNotification();}
+const result=await sb.rpc("admin_send_notification",{target_user:userId,notification_title:title,notification_message:message,notification_type:"admin"});
+$("notifyStatus").textContent=result.error?result.error.message:"Notification sent.";
+if(!result.error){$("notifyMessage").value="";await refreshAll();}
+}
+
+async function broadcastAdminNotification(){
+if(!hasPermission("notifications")){alert("You do not have permission to send notifications.");return;}
+const title=$("notifyTitle").value.trim();
+const message=$("notifyMessage").value.trim();
+if(!title||!message){$("notifyStatus").textContent="Title and message are required.";return;}
+const result=await sb.rpc("admin_broadcast_notification",{notification_title:title,notification_message:message,notification_type:"announcement"});
+$("notifyStatus").textContent=result.error?result.error.message:`Sent to ${Number(result.data||0).toLocaleString()} active users.`;
+if(!result.error){$("notifyMessage").value="";await refreshAll();}
+}
+
+function prepareUserNotification(id,name){
+$("notifyUserId").value=id;
+$("notifyTitle").value=`Message for ${name}`;
+$("notifyMessage").focus();
+window.scrollTo({top:document.getElementById("notifyUserId").getBoundingClientRect().top+window.scrollY-100,behavior:"smooth"});
+}
+
+async function giftCoins(id){
+if(!hasPermission("coins")){alert("You do not have permission to manage coins.");return;}
+const raw=prompt("How many coins should be added?");
+if(raw===null)return;
+const amount=Number(raw);
+if(!Number.isInteger(amount)||amount<=0){alert("Enter a positive whole number.");return;}
+const reason=prompt("Reason for the coin gift?","Admin gift");
+if(reason===null)return;
+const result=await sb.rpc("admin_adjust_coins",{target_user:id,amount,reason});
+if(result.error)alert(result.error.message);
+else await refreshAll();
+}
+
+async function setUserRole(id,role){
+if(!hasPermission("roles")){alert("You do not have permission to manage roles.");return;}
+if(id===SUPER_ADMIN_ID){alert("The Main Super Admin cannot be changed here.");return;}
+const result=await sb.rpc("admin_set_role",{target_user:id,new_role:role,new_permissions:{}});
+if(result.error)alert(result.error.message);
+else await loadUsers();
+}
+
+async function setVerification(id,status){
+if(!hasPermission("verification")){alert("You do not have permission to manage verification.");return;}
+if(id===SUPER_ADMIN_ID){alert("The Main Super Admin is always verified.");return;}
+const result=await sb.rpc("admin_set_verification",{target_user:id,new_status:status});
+if(result.error)alert(result.error.message);
+else await loadUsers();
+}
+
+async function loadAnalytics(){
+const element=$("analytics");
+const result=await sb.from("movie_view_totals").select("*").order("views",{ascending:false}).limit(12);
+if(result.error){element.innerHTML=`<div class="empty">${esc(result.error.message)}</div>`;return;}
+const rows=result.data||[];
+if(!rows.length){element.innerHTML='<div class="empty">No real viewing data yet.</div>';return;}
+const max=Math.max(...rows.map(r=>Number(r.views||0)),1);
+element.innerHTML=`
+<div style="display:grid;gap:10px">
+${rows.map(r=>`
+<div>
+<div style="display:flex;justify-content:space-between;gap:10px;font-size:.82rem;margin-bottom:5px">
+<span>${esc(r.title||("TMDB #"+r.tmdb_id))}</span>
+<strong>${Number(r.views||0).toLocaleString()}</strong>
+</div>
+<div style="height:9px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden">
+<div style="width:${Math.max(2,Math.round(Number(r.views||0)/max*100))}%;height:100%;background:var(--neon-cyan);border-radius:999px"></div>
+</div>
+</div>`).join("")}
+</div>
+<div style="overflow:auto;margin-top:18px">
+<table class="table">
+<thead><tr><th>Title</th><th>Type</th><th>Views</th><th>Last Viewed</th></tr></thead>
+<tbody>
+${rows.map(r=>`<tr><td>${esc(r.title||("TMDB #"+r.tmdb_id))}</td><td>${esc(r.media_type)}</td><td>${Number(r.views||0).toLocaleString()}</td><td>${r.last_viewed_at?new Date(r.last_viewed_at).toLocaleString():"—"}</td></tr>`).join("")}
+</tbody>
+</table>
+</div>`;
+}
+
+async function logout(){
+
+if(!sb){
+return;
+}
+
+try{
+await sb.auth.signOut();
+}catch(error){
+console.error(error);
+}
+
+me=null;
+adminRole=null;
+adminPermissions={};
+
+location.reload();
+}
+
+function setupAuthListener(){
+
+sb.auth.onAuthStateChange(
+async function(
+event,
+session
+){
+
+if(
+event==="SIGNED_OUT"
+){
+
+me=null;
+adminRole=null;
+adminPermissions={};
+
+$("loginView")
+.classList
+.remove("hidden");
+
+$("app")
+.classList
+.add("hidden");
+
+return;
+}
+
+if(
+event==="SIGNED_IN"&&
+session?.user
+){
+
+await boot(
+session.user
+);
+
+}
+
+}
+);
+}
+
+$("password").addEventListener(
+"keydown",
+function(event){
+if(event.key==="Enter"){
+adminLogin();
+}
+}
+);
+
+$("email").addEventListener(
+"keydown",
+function(event){
+if(event.key==="Enter"){
+adminLogin();
+}
+}
+);
+
+(async function(){
+
+if(!initializeSupabase()){
+return;
+}
+
+setupAuthListener();
+
+try{
+
+const result=
+await sb.auth.getSession();
+
+const data=result.data;
+const error=result.error;
+
+if(error){
+
+console.error(
+"Session check error:",
+error
+);
+
+loginMessage(
+error.message,
+"error"
+);
+
+return;
+}
+
+if(
+data?.session?.user
+){
+
+await boot(
+data.session.user
+);
+
+}
+
+}catch(error){
+
+console.error(
+"Application startup error:",
+error
+);
+
+loginMessage(
+error.message||
+"Unable to start administrator panel.",
+"error"
+);
+
+}
+
+})();
+</script>
+
+</body>
+</html>

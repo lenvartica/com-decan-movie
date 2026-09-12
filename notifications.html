@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050816">
+<title>Notifications — DECAN MOVIE</title>
+<meta name="description" content="DECAN MOVIE notifications, announcements, coin gifts and account updates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--bg:#050816;--panel:rgba(13,20,42,.82);--border:rgba(100,180,255,.16);--text:#eef5ff;--muted:#8fa4c7;--cyan:#22d3ee;--blue:#3b82f6;--green:#34d399;--red:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#101b3c 0,#050816 42%,#02040c 100%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{font-weight:800;font-size:22px;letter-spacing:.04em}.brand span{color:var(--cyan)}.back{color:var(--text);text-decoration:none;border:1px solid var(--border);padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04)}.hero{padding:24px;border:1px solid var(--border);background:var(--panel);border-radius:22px;backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.25);margin-bottom:18px}.hero h1{margin:0 0 8px;font-size:30px}.hero p{margin:0;color:var(--muted)}.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}.btn{border:0;border-radius:11px;padding:10px 14px;background:#14203d;color:var(--text);cursor:pointer;font-weight:700}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#00111b}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}.stat{padding:18px;border:1px solid var(--border);background:var(--panel);border-radius:18px}.stat small{display:block;color:var(--muted);margin-bottom:6px}.stat strong{font-size:25px}.list{display:grid;gap:12px}.item{border:1px solid var(--border);background:var(--panel);border-radius:18px;padding:18px;display:flex;gap:14px;align-items:flex-start}.icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:rgba(34,211,238,.1);color:var(--cyan);flex:none}.item.unread{border-color:rgba(34,211,238,.45);box-shadow:0 0 24px rgba(34,211,238,.06)}.item h3{margin:0 0 6px;font-size:16px}.item p{margin:0;color:#b9c7df;line-height:1.55}.time{display:block;color:var(--muted);font-size:12px;margin-top:10px}.empty{text-align:center;padding:50px;color:var(--muted);border:1px dashed var(--border);border-radius:18px}.login{text-align:center;padding:60px 20px}.coin{color:#fbbf24}.toast{position:fixed;right:20px;bottom:20px;background:#101b35;border:1px solid var(--border);padding:13px 16px;border-radius:12px;display:none;z-index:20}.toast.show{display:block}@media(max-width:600px){.wrap{padding:14px}.stats{grid-template-columns:1fr}.hero h1{font-size:25px}.item{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">⚛ <span>DECAN</span> MOVIE</div>
+    <a class="back" href="account.html"><i class="fa-solid fa-user"></i> Account</a>
+  </div>
+
+  <section class="hero">
+    <h1><i class="fa-solid fa-bell"></i> Notifications</h1>
+    <p>Announcements, account updates, coin gifts and other messages from DECAN MOVIE.</p>
+    <div class="actions">
+      <button class="btn primary" id="markAll"><i class="fa-solid fa-check-double"></i> Mark all as read</button>
+      <button class="btn" id="refresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    </div>
+  </section>
+
+  <div id="login" class="hero login" style="display:none">
+    <i class="fa-solid fa-lock" style="font-size:38px;color:var(--cyan)"></i>
+    <h2>Sign in to view notifications</h2>
+    <p>Your notifications and coin activity are private to your account.</p>
+    <div class="actions" style="justify-content:center">
+      <a class="btn primary" href="index.html">Sign in</a>
+    </div>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="stats">
+      <div class="stat"><small>Unread</small><strong id="unread">0</strong></div>
+      <div class="stat"><small>Coins</small><strong class="coin" id="coins">0</strong></div>
+    </div>
+    <div id="list" class="list"></div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="supabase-config.js"></script>
+<script>
+(function(){
+  const sb=()=>window.DecanAccount?.getClient?.()||null;
+  const user=()=>window.DecanAccount?.getUser?.()||null;
+  const $=id=>document.getElementById(id);
+  function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2800)}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function icon(type){return type==='coin_gift'?'fa-coins':type==='announcement'?'fa-bullhorn':type==='security'?'fa-shield-halved':'fa-bell'}
+  async function load(){
+    const client=sb(), u=user();
+    if(!client||!u){$('login').style.display='block';$('app').style.display='none';return}
+    $('login').style.display='none';$('app').style.display='block';
+    const [n,c]=await Promise.all([
+      client.from('notifications').select('id,title,message,type,read_at,created_at').eq('user_id',u.id).order('created_at',{ascending:false}).limit(100),
+      client.from('profiles').select('coins').eq('id',u.id).single()
+    ]);
+    if(n.error){$('list').innerHTML='<div class="empty">Unable to load notifications.</div>';return}
+    const rows=n.data||[];
+    $('unread').textContent=rows.filter(x=>!x.read_at).length;
+    $('coins').textContent=Number(c.data?.coins||0).toLocaleString();
+    if(!rows.length){$('list').innerHTML='<div class="empty"><i class="fa-regular fa-bell-slash" style="font-size:32px"></i><h3>No notifications yet</h3><p>New announcements and account updates will appear here.</p></div>';return}
+    $('list').innerHTML=rows.map(x=>`
+      <article class="item ${x.read_at?'':'unread'}" data-id="${x.id}">
+        <div class="icon"><i class="fa-solid ${icon(x.type)}"></i></div>
+        <div>
+          <h3>${esc(x.title)}</h3>
+          <p>${esc(x.message||'')}</p>
+          <span class="time">${new Date(x.created_at).toLocaleString()}</span>
+        </div>
+      </article>`).join('');
+    document.querySelectorAll('.item.unread').forEach(el=>el.addEventListener('click',async()=>{
+      await client.from('notifications').update({read_at:new Date().toISOString()}).eq('id',el.dataset.id).eq('user_id',u.id);
+      el.classList.remove('unread');load();
+    }));
+  }
+  $('markAll').onclick=async()=>{const u=user();if(!u)return;const {error}=await sb().from('notifications').update({read_at:new Date().toISOString()}).eq('user_id',u.id).is('read_at',null);if(error)toast('Could not mark notifications as read');else{toast('All notifications marked as read');load()}};
+  $('refresh').onclick=load;
+  window.addEventListener('DOMContentLoaded',load);
+  window.addEventListener('focus',load);
+})();
+</script>
+<script src="account.js"></script>
+</body>
+</html>

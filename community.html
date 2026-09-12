@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community — DECAN MOVIE</title>
+<style>
+body{margin:0;background:#050816;color:#f5f7ff;font-family:Inter,system-ui,sans-serif}.wrap{max-width:900px;margin:auto;padding:30px 20px}.top{display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900}.logo span{color:#20d9ff}a{color:inherit;text-decoration:none}.panel{background:#0b1020;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:20px;margin-top:18px}.muted{color:#9ba7c4;line-height:1.6}button{padding:10px 14px;border-radius:10px;border:1px solid rgba(32,217,255,.3);background:#10172b;color:white;cursor:pointer}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}input,textarea{width:100%;box-sizing:border-box;padding:12px;background:#050816;color:white;border:1px solid rgba(255,255,255,.1);border-radius:10px;margin:6px 0}textarea{min-height:110px}footer{text-align:center;padding:30px;color:#9ba7c4}@media(max-width:650px){.row{grid-template-columns:1fr}}
+</style></head><body><div class="wrap"><div class="top"><a class="logo" href="index.html">DECAN <span>MOVIE</span></a><a href="index.html">← Home</a></div>
+<div class="panel"><h1>Community</h1><p class="muted">Write reviews and build your movie identity. This page uses your existing Supabase project configuration when available.</p></div>
+<div class="panel"><h2>Write a Review</h2><div class="row"><input id="movieId" placeholder="TMDB Movie/TV ID"><input id="mediaType" value="movie" placeholder="movie or tv"></div><textarea id="review" placeholder="Share your thoughts..."></textarea><button id="save">Publish Review</button><p id="msg" class="muted"></p></div>
+<div class="panel"><h2>Coming Community Features</h2><p class="muted">Profiles, follows, review likes, achievements and XP are prepared by the optional database migration included with this upgrade.</p></div></div><footer>© <span id="y"></span> DECAN MOVIE. All rights reserved. Made with passion by Lenny Muriuki.</footer>
+<script src="supabase-config.js"></script>
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+const msg=document.getElementById('msg');
+document.getElementById('save').onclick=async()=>{
+try{
+if(!window.supabaseClient){msg.textContent='Supabase client is not available. Keep using the existing account system or apply the optional SQL migration first.';return}
+const {data:{user}}=await window.supabaseClient.auth.getUser();if(!user){msg.textContent='Please sign in first.';return}
+const movie_id=Number(document.getElementById('movieId').value);const media_type=document.getElementById('mediaType').value==='tv'?'tv':'movie';const body=document.getElementById('review').value.trim();if(!movie_id||!body){msg.textContent='Enter a TMDB ID and review.';return}
+const {error}=await window.supabaseClient.from('movie_reviews').insert({user_id:user.id,movie_id,media_type,body});msg.textContent=error?error.message:'Review published.';
+}catch(e){msg.textContent=e.message||'Could not publish review.'}
+};
+</script></body></html>

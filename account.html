@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account | Decan Movie</title>
+<meta name="description" content="Manage your Decan Movie profile, security, cloud library, ratings, rewards and personalized recommendations.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://decan-konnect-movie.vercel.app/account.html">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#07090d;--panel:#10141c;--panel2:#151a24;--line:rgba(255,255,255,.09);--text:#f7f9fc;--muted:#9aa4b5;--cyan:#00e5ff;--green:#45f29a;--danger:#ff5577;--gold:#ffd166;--shadow:0 20px 70px rgba(0,0,0,.35)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 500px at 20% -10%,#122b3b 0,transparent 60%),radial-gradient(700px 500px at 100% 0,#21162b 0,transparent 55%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,calc(100% - 28px));margin:auto;padding:22px 0 70px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.brand{font-weight:950;letter-spacing:2px;font-size:1.18rem}.brand span{color:var(--cyan)}.top-actions{display:flex;gap:9px;align-items:center}.btn,.back{border:1px solid var(--line);background:#111620;color:#e9edf4;border-radius:12px;padding:10px 14px;display:inline-flex;align-items:center;gap:8px}.btn:hover,.back:hover{border-color:var(--cyan);transform:translateY(-1px)}.primary{background:linear-gradient(135deg,#00dff5,#00a9c2);color:#021116;border:0;font-weight:850;box-shadow:0 8px 25px rgba(0,229,255,.14)}.danger{border-color:rgba(255,85,119,.3);color:#ff9bb0}.hidden{display:none!important}
+.hero{border:1px solid var(--line);border-radius:24px;padding:26px;background:linear-gradient(135deg,rgba(0,229,255,.09),rgba(69,242,154,.04) 45%,rgba(255,255,255,.02));box-shadow:var(--shadow);margin-bottom:18px}.hero-grid{display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center}.eyebrow{color:var(--cyan);font-weight:850;text-transform:uppercase;letter-spacing:1.5px;font-size:.72rem}.hero h1{margin:7px 0 8px;font-size:clamp(1.7rem,4vw,2.7rem)}.hero p{margin:0;color:var(--muted);max-width:720px;line-height:1.6}.avatar{width:105px;height:105px;border-radius:50%;object-fit:cover;border:3px solid rgba(0,229,255,.45);box-shadow:0 0 30px rgba(0,229,255,.12)}
+.auth{max-width:720px;margin:45px auto}.auth-head{text-align:center;margin-bottom:20px}.auth-head h1{margin:8px 0}.tabs,.nav{display:flex;gap:7px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:#0d1118;color:var(--muted);padding:10px 13px;border-radius:11px;font-weight:750}.tab.active,.tab:hover{color:#fff;border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.08)}.card{background:rgba(16,20,28,.94);border:1px solid var(--line);border-radius:20px;padding:21px;box-shadow:var(--shadow)}.form{display:grid;gap:13px}.field{width:100%;background:#090d13;color:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 13px;outline:0}.field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.08)}label{font-size:.78rem;color:var(--muted);display:block;margin:0 0 6px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.msg{margin:12px 0;padding:11px 13px;border-radius:10px;background:rgba(255,85,119,.08);border:1px solid rgba(255,85,119,.2);color:#ffb3c1}.msg.ok{background:rgba(69,242,154,.08);border-color:rgba(69,242,154,.2);color:#aaffd0}
+.dashboard{display:grid;grid-template-columns:245px 1fr;gap:16px}.side{height:max-content;position:sticky;top:15px}.side-profile{text-align:center;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:12px}.side-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover}.side-name{font-weight:900;margin-top:9px}.side-user{color:var(--muted);font-size:.78rem}.nav{display:grid}.nav .tab{text-align:left}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}.stat{background:#0c1017;border:1px solid var(--line);border-radius:15px;padding:15px}.stat i{color:var(--cyan)}.stat b{display:block;font-size:1.45rem;margin-top:6px}.small{font-size:.75rem;color:var(--muted)}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-title h2{margin:0;font-size:1.1rem}.panel{display:none}.panel.active{display:block}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.media-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}.media-card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#0b0f15}.media-card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}.media-card .mi{padding:9px}.media-card b{font-size:.78rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.media-card span{font-size:.7rem;color:var(--muted)}.coin{color:var(--gold)}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:rgba(69,242,154,.08);border:1px solid rgba(69,242,154,.18);color:var(--green);font-size:.7rem;font-weight:800}.empty{text-align:center;padding:28px;color:var(--muted);border:1px dashed var(--line);border-radius:14px}.help{color:var(--muted);font-size:.8rem;line-height:1.5}.file{border:1px dashed var(--line);padding:12px;border-radius:11px;background:#0b0f15}
+@media(max-width:850px){.dashboard{grid-template-columns:1fr}.side{position:static}.stats{grid-template-columns:repeat(2,1fr)}.media-grid{grid-template-columns:repeat(3,1fr)}.hero-grid{grid-template-columns:1fr}.split{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{width:min(100% - 18px,1180px)}.row{grid-template-columns:1fr}.top-actions .back span{display:none}.media-grid{grid-template-columns:repeat(2,1fr)}.hero{padding:19px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <a class="brand" href="index.html">DECAN <span>MOVIE</span></a>
+    <div class="top-actions">
+      <a class="back" href="index.html"><i class="fa-solid fa-house"></i><span>Movie Site</span></a>
+    </div>
+  </div>
+
+  <main id="accountGate" class="auth hidden">
+    <div class="card">
+      <div class="auth-head">
+        <div class="eyebrow">Decan Member</div>
+        <h1>Your account window</h1>
+        <p class="help">Sign in from the main Decan Movie account window to access your profile, cloud library, rewards, ratings and security settings.</p>
+      </div>
+      <div id="gateMsg" class="msg">You are not signed in.</div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:14px">
+        <a class="btn primary" href="index.html?account=1"><i class="fa-solid fa-right-to-bracket"></i> Open Sign In</a>
+        <a class="btn" href="index.html?account=1&mode=reset"><i class="fa-solid fa-key"></i> Forgot Password</a>
+      </div>
+    </div>
+  </main>
+
+  <main id="profileView" class="hidden">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Member Dashboard</div>
+          <h1>Welcome back, <span id="memberName">Member</span></h1>
+          <p>Your Decan Movie profile is synced to the cloud. Manage your identity, security, library and rewards from one place.</p>
+          <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="badge"><i class="fa-solid fa-cloud"></i>&nbsp; Cloud Sync</span>
+            <span class="badge"><i class="fa-solid fa-shield-halved"></i>&nbsp; Member</span>
+          </div>
+        </div>
+        <img id="heroAvatar" class="avatar" alt="Profile picture">
+      </div>
+    </section>
+
+    <div class="dashboard">
+      <aside class="side card">
+        <div class="side-profile">
+          <img id="sideAvatar" class="side-avatar" alt="Profile picture">
+          <div id="sideName" class="side-name">Member</div>
+          <div id="sideUsername" class="side-user"></div>
+          <div id="memberEmail" class="side-user" style="margin-top:4px"></div>
+        </div>
+        <div class="nav">
+          <button type="button" class="tab active" data-panel="overviewPanel"><i class="fa-solid fa-grid-2"></i> Overview</button>
+          <button type="button" class="tab" data-panel="profilePanel"><i class="fa-solid fa-user"></i> Profile</button>
+          <button type="button" class="tab" data-panel="securityPanel"><i class="fa-solid fa-lock"></i> Security</button>
+          <button type="button" class="tab" data-panel="libraryPanel"><i class="fa-solid fa-cloud"></i> My Library</button>
+          <button type="button" class="tab" data-panel="rewardsPanel"><i class="fa-solid fa-coins coin"></i> Rewards</button>
+          <button type="button" class="tab" data-panel="recommendPanel"><i class="fa-solid fa-wand-magic-sparkles"></i> For You</button>
+          <button type="button" class="tab" data-panel="reportPanel"><i class="fa-solid fa-bug"></i> Report</button>
+          <button type="button" class="tab" data-panel="notificationsPanel"><i class="fa-solid fa-bell"></i> Notifications <span id="notificationBadge" style="display:none;margin-left:auto;background:#ff5577;color:#fff;border-radius:999px;padding:2px 7px;font-size:.68rem">0</span></button>
+        </div>
+        <div style="margin-top:12px">
+          <input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp" class="field file">
+          <button type="button" id="uploadAvatar" class="btn primary" style="width:100%;margin-top:8px"><i class="fa-solid fa-camera"></i> Update Picture</button>
+          <button type="button" id="logout" class="btn danger" style="width:100%;margin-top:8px"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+        </div>
+      </aside>
+
+      <section>
+        <div id="profileMsg"></div>
+        <div id="securityMsg"></div>
+
+        <section id="overviewPanel" class="panel active">
+          <div class="stats">
+            <div class="stat"><i class="fa-solid fa-bookmark"></i><b id="watchlistCount">0</b><span class="small">Watchlist</span></div>
+            <div class="stat"><i class="fa-solid fa-heart"></i><b id="favoriteCount">0</b><span class="small">Favorites</span></div>
+            <div class="stat"><i class="fa-solid fa-star"></i><b id="ratingCount">0</b><span class="small">Ratings</span></div>
+            <div class="stat"><i class="fa-solid fa-coins coin"></i><b id="coinCount">0</b><span class="small">Coins</span></div>
+          </div>
+          <div class="split">
+            <div class="card">
+              <div class="section-title"><h2>Cloud status</h2><span id="syncStatus" class="badge">Ready</span></div>
+              <p class="help">Your personal movie data can be synchronized between devices when you're signed in.</p>
+              <button type="button" id="syncNow" class="btn primary"><i class="fa-solid fa-rotate"></i> Sync My Library</button>
+            </div>
+            <div class="card">
+              <div class="section-title"><h2>Account ID</h2><button type="button" id="copyUserId" class="btn"><i class="fa-regular fa-copy"></i> Copy</button></div>
+              <code id="userId" style="display:block;word-break:break-all;color:var(--muted);font-size:.76rem"></code>
+              <p class="help">This is your Supabase member ID. Never share your password or recovery codes.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="profilePanel" class="panel card">
+          <div class="section-title"><h2>Profile</h2><span class="small">Your public member information</span></div>
+          <form id="profileForm" class="form">
+            <div class="row">
+              <div><label>Display name</label><input id="profileName" class="field" maxlength="60"></div>
+              <div><label>Username</label><input id="profileUsername" class="field" maxlength="30" pattern="[A-Za-z0-9_]{3,30}"></div>
+            </div>
+            <div class="row">
+              <div><label>Location</label><input id="profileLocation" class="field" maxlength="80"></div>
+              <div><label>Favorite genre</label><input id="profileGenre" class="field" maxlength="60" placeholder="Action, Anime, Drama..."></div>
+            </div>
+            <div><label>Bio</label><textarea id="profileBio" class="field" rows="5" maxlength="500"></textarea></div>
+            <button type="submit" class="btn primary"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
+          </form>
+        </section>
+
+        <section id="securityPanel" class="panel card">
+          <div class="section-title"><h2>Security</h2><span class="badge">Protected by Supabase Auth</span></div>
+          <div class="split">
+            <div>
+              <label>New password</label><input id="newPassword" class="field" type="password" minlength="8" autocomplete="new-password">
+            </div>
+            <div>
+              <label>Confirm password</label><input id="confirmPassword" class="field" type="password" minlength="8" autocomplete="new-password">
+            </div>
+          </div>
+          <button type="button" id="changePassword" class="btn primary" style="margin-top:12px"><i class="fa-solid fa-key"></i> Change Password</button>
+          <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+          <label>New email address</label><input id="newEmail" class="field" type="email" autocomplete="email">
+          <button type="button" id="changeEmail" class="btn" style="margin-top:10px"><i class="fa-solid fa-envelope"></i> Update Email</button>
+          <p class="help">Supabase may require confirmation of the new email address.</p>
+        </section>
+
+        <section id="libraryPanel" class="panel card">
+          <div class="section-title"><h2>My Cloud Library</h2><span class="small">Local + cloud</span></div>
+          <div class="stats">
+            <div class="stat"><b id="libraryWatch">0</b><span class="small">Watchlist</span></div>
+            <div class="stat"><b id="libraryFav">0</b><span class="small">Favorites</span></div>
+            <div class="stat"><b id="libraryHistory">0</b><span class="small">History</span></div>
+            <div class="stat"><b id="libraryContinue">0</b><span class="small">Continue</span></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b id="libraryRatings">0</b><span class="small">Ratings</span></div>
+            <div class="stat"><b id="libraryCustom">0</b><span class="small">Custom Lists</span></div>
+          </div>
+          <button type="button" id="librarySync" class="btn primary"><i class="fa-solid fa-cloud-arrow-up"></i> Sync Now</button>
+        </section>
+
+        <section id="rewardsPanel" class="panel">
+          <div class="card">
+            <div class="section-title"><h2>Daily Rewards</h2><span class="badge"><i class="fa-solid fa-fire"></i>&nbsp; <span id="streakCount">0 days</span></span></div>
+            <p class="help">Come back each day to claim your member reward. Your streak and coins are stored with your profile.</p>
+            <div style="font-size:2.4rem;font-weight:950;color:var(--gold);margin:12px 0"><i class="fa-solid fa-coins"></i> <span id="rewardCoins">0</span></div>
+            <button type="button" id="claimReward" class="btn primary"><i class="fa-solid fa-gift"></i> Claim Today's Coins</button>
+            <div id="rewardMsg"></div>
+          </div>
+        </section>
+
+        
+<section id="reportPanel" class="panel">
+  <div class="card">
+    <div class="section-title"><h2>🛠 Report a Problem</h2></div>
+    <p class="help">Report a bug, account problem, content issue, payment issue, or security concern.</p>
+    <select id="reportCategory" class="field">
+      <option value="bug">Bug</option>
+      <option value="account">Account</option>
+      <option value="content">Content</option>
+      <option value="payment">Payment / Coins</option>
+      <option value="security">Security</option>
+      <option value="other">Other</option>
+    </select>
+    <input id="reportSubject" class="field" placeholder="Short subject">
+    <textarea id="reportMessage" class="field" rows="5" placeholder="Describe the problem"></textarea>
+    <button type="button" id="submitReport" class="btn primary"><i class="fa-solid fa-bug"></i> Send Report</button>
+    <div id="reportMsg"></div>
+  </div>
+</section>
+
+
+<section id="notificationsPanel" class="panel">
+  <div class="card">
+    <div class="section-title"><h2>🔔 Notifications</h2><div style="display:flex;gap:8px"><button type="button" id="markNotificationsRead" class="btn"><i class="fa-solid fa-check-double"></i> Mark Read</button><button type="button" id="refreshNotifications" class="btn"><i class="fa-solid fa-rotate"></i> Refresh</button></div></div>
+    <div id="notificationsList"><p class="help">Loading notifications…</p></div>
+  </div>
+</section>
+
+<section id="recommendPanel" class="panel">
+          <div class="card">
+            <div class="section-title"><h2>Recommended For You</h2><button type="button" id="refreshRecommendations" class="btn"><i class="fa-solid fa-rotate"></i> Refresh</button></div>
+            <p class="help">A quick selection from the live movie and TV catalog. Your viewing activity can make the experience more personal over time.</p>
+            <div id="recommendations" class="media-grid" style="margin-top:14px"></div>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="account.js"></script>
+<script>
+(function(){
+  'use strict';
+  const gate=document.getElementById('accountGate');
+  const view=document.getElementById('profileView');
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  let sb=null,user=null,profile=null;
+  function local(k,f){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch{return f}}
+  function message(id,text,ok=false){const el=$(id);if(el)el.innerHTML='<div class="msg '+(ok?'ok':'')+'">'+esc(text)+'</div>'}
+  function counts(){
+    const vals={watchlist:local('decan_watchlist',[]).length,favorites:local('decan_favorites',[]).length,history:local('decan_history',[]).length,ratings:Object.keys(local('decan_ratings',{})).length,cont:local('decan_continue_watching',[]).length,custom:local('decan_customlist',[]).length};
+    ['watchlistCount','libraryWatch'].forEach(id=>$(id).textContent=vals.watchlist);['favoriteCount','libraryFav'].forEach(id=>$(id).textContent=vals.favorites);['ratingCount','libraryRatings'].forEach(id=>$(id).textContent=vals.ratings);$('libraryHistory').textContent=vals.history;$('libraryContinue').textContent=vals.cont;$('libraryCustom').textContent=vals.custom;
+  }
+  function avatar(name,url){return url||('https://ui-avatars.com/api/?name='+encodeURIComponent(name||'Member')+'&background=10151d&color=00e5ff&size=240')}
+  function setPanel(name){document.querySelectorAll('[data-panel]').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));const panel=$(name);if(panel)panel.classList.add('active');if(name==='libraryPanel')counts();if(name==='recommendPanel')loadRecommendations();if(name==='notificationsPanel')loadNotifications();if(name==='rewardsPanel')refreshCoinBalance();history.replaceState(null,'','#'+name.replace('Panel',''))}
+  document.querySelectorAll('[data-panel]').forEach(b=>b.addEventListener('click',()=>setPanel(b.dataset.panel)));
+  function initialPanel(){const id=location.hash.replace('#','')+'Panel';if($(id)&&id!=='Panel')setPanel(id)}
+  async function loadProfile(){
+    const {data,error}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    if(error)console.warn(error);profile=data||{};
+    const name=profile.display_name||user.user_metadata?.display_name||user.email?.split('@')[0]||'Member';
+    $('memberName').textContent=name;$('sideName').textContent=name;$('sideUsername').textContent=profile.username?'@'+profile.username:'';$('memberEmail').textContent=user.email||'';$('userId').textContent=user.id;
+    $('profileName').value=profile.display_name||'';$('profileUsername').value=profile.username||'';$('profileLocation').value=profile.location||'';$('profileGenre').value=profile.favorite_genre||'';$('profileBio').value=profile.bio||'';$('coinCount').textContent=Number(profile.coins||0).toLocaleString();$('rewardCoins').textContent=Number(profile.coins||0).toLocaleString();$('streakCount').textContent=Number(profile.streak_days||0)+' days';
+    const pic=avatar(name,profile.avatar_url);$('heroAvatar').src=pic;$('sideAvatar').src=pic;counts();
+  }
+  $('profileForm').addEventListener('submit',async e=>{e.preventDefault();const username=$('profileUsername').value.trim().toLowerCase();if(username&&!/^[a-z0-9_]{3,30}$/.test(username))return message('profileMsg','Username must be 3–30 characters using letters, numbers or underscores.');const payload={id:user.id,display_name:$('profileName').value.trim()||null,username:username||null,location:$('profileLocation').value.trim()||null,favorite_genre:$('profileGenre').value.trim()||null,bio:$('profileBio').value.trim()||null,updated_at:new Date().toISOString()};const {data,error}=await sb.from('profiles').upsert(payload,{onConflict:'id'}).select().single();if(error)return message('profileMsg',error.message);profile=data;await loadProfile();message('profileMsg','Profile saved successfully.',true)});
+  $('changePassword').addEventListener('click',async()=>{const a=$('newPassword').value,b=$('confirmPassword').value;if(a.length<8||a!==b)return message('securityMsg','Passwords must match and contain at least 8 characters.');const {error}=await sb.auth.updateUser({password:a});if(error)return message('securityMsg',error.message);$('newPassword').value='';$('confirmPassword').value='';message('securityMsg','Password changed successfully.',true)});
+  $('changeEmail').addEventListener('click',async()=>{const email=$('newEmail').value.trim();if(!email)return message('securityMsg','Enter a new email address.');const {error}=await sb.auth.updateUser({email});if(error)return message('securityMsg',error.message);message('securityMsg','Email update requested. Check your email to confirm.',true)});
+  $('uploadAvatar').addEventListener('click',async()=>{const file=$('avatarFile').files[0];if(!file)return message('profileMsg','Choose a JPG, PNG or WebP image first.');if(file.size>2*1024*1024)return message('profileMsg','Profile picture must be 2 MB or smaller.');if(!/^image\/(jpeg|png|webp)$/.test(file.type))return message('profileMsg','Use JPG, PNG or WebP.');const ext=(file.name.split('.').pop()||'jpg').toLowerCase(),path=user.id+'/avatar.'+ext;const {error:up}=await sb.storage.from('avatars').upload(path,file,{upsert:true,contentType:file.type,cacheControl:'3600'});if(up)return message('profileMsg',up.message);const {data}=sb.storage.from('avatars').getPublicUrl(path);const {error}=await sb.from('profiles').update({avatar_url:data.publicUrl+'?v='+Date.now(),updated_at:new Date().toISOString()}).eq('id',user.id);if(error)return message('profileMsg',error.message);$('avatarFile').value='';await loadProfile();message('profileMsg','Profile picture updated.',true)});
+  async function refreshCoinBalance(){
+    if(!sb||!user)return;
+    const {data,error}=await sb.from('profiles').select('coins,streak_days').eq('id',user.id).maybeSingle();
+    if(error)return;
+    const coins=Number(data?.coins||0);
+    $('coinCount').textContent=coins.toLocaleString();
+    $('rewardCoins').textContent=coins.toLocaleString();
+    $('streakCount').textContent=Number(data?.streak_days||0)+' days';
+  }
+  async function loadNotifications(){
+    if(!sb||!user)return;
+    const list=$('notificationsList');
+    if(!list)return;
+    list.innerHTML='<p class="help">Loading notifications…</p>';
+    const {data,error}=await sb.from('notifications').select('id,title,message,type,read_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(50);
+    if(error){list.innerHTML='<p class="help">'+esc(error.message)+'</p>';return;}
+    const rows=data||[];
+    const unread=rows.filter(n=>!n.read_at).length;
+    const badge=$('notificationBadge');
+    if(badge){badge.textContent=unread;badge.style.display=unread?'inline-block':'none';}
+    if(!rows.length){list.innerHTML='<div class="empty"><i class="fa-regular fa-bell-slash" style="font-size:28px"></i><p>No notifications yet.</p></div>';return;}
+    list.innerHTML=rows.map(n=>{
+      const title=esc(n.title||'Notification');
+      const msg=esc(n.message||'');
+      const isUnread=!n.read_at;
+      const type=n.type==='coin_gift'?'coin':(n.type==='security'?'shield':'bell');
+      return '<div class="card" data-notification-id="'+n.id+'" style="margin-bottom:10px;border-color:'+(isUnread?'rgba(0,229,255,.38)':'var(--line)')+';background:'+(isUnread?'rgba(0,229,255,.045)':'#0c1017')+'"><div style="display:flex;gap:12px;align-items:flex-start"><div style="width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(0,229,255,.08);color:'+(type==='coin'?'var(--gold)':'var(--cyan)')+'"><i class="fa-solid fa-'+type+'"></i></div><div style="flex:1"><div class="section-title" style="margin-bottom:6px"><h3 style="margin:0">'+title+'</h3>'+(isUnread?'<span class="badge">NEW</span>':'')+'</div><p class="help" style="margin:0">'+msg+'</p><div class="small" style="margin-top:8px">'+new Date(n.created_at).toLocaleString()+'</div></div></div></div>';
+    }).join('');
+  }
+  async function markNotificationsRead(){
+    if(!sb||!user)return;
+    const {error}=await sb.from('notifications').update({read_at:new Date().toISOString()}).eq('user_id',user.id).is('read_at',null);
+    if(error)return message('profileMsg',error.message);
+    await loadNotifications();
+  }
+  $('claimReward').addEventListener('click',async()=>{
+    const {data,error}=await sb.rpc('claim_daily_reward');
+    if(error)return message('rewardMsg',error.message);
+    await refreshCoinBalance();
+    await loadNotifications();
+    message('rewardMsg',data?.claimed?`You earned ${data.amount||0} coins today!`:'Daily reward already claimed today.',true);
+  });
+  $('refreshNotifications')?.addEventListener('click',async()=>{await refreshCoinBalance();await loadNotifications()});
+  $('markNotificationsRead')?.addEventListener('click',markNotificationsRead);
+  async function syncLibrary(){if(!window.DecanAccount?.sync)return message('profileMsg','Cloud synchronization is unavailable.');$('syncStatus').textContent='Syncing…';try{await window.DecanAccount.sync();$('syncStatus').textContent='Synced';counts();message('profileMsg','Your library is synchronized.',true)}catch(e){$('syncStatus').textContent='Error';message('profileMsg',e.message||'Sync failed.')}}
+  $('syncNow').addEventListener('click',syncLibrary);$('librarySync').addEventListener('click',syncLibrary);
+  $('copyUserId').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(user.id);message('profileMsg','Account ID copied.',true)}catch{message('profileMsg','Your browser blocked clipboard access.')}});
+  $('logout').addEventListener('click',async()=>{await sb.auth.signOut();location.href='index.html'});
+  async function loadRecommendations(){const box=$('recommendations');box.innerHTML='<div class="empty" style="grid-column:1/-1">Loading recommendations…</div>';try{const r=await fetch('/api/tmdb/trending/movie/week');if(!r.ok)throw new Error('Recommendation service unavailable.');const data=await r.json();const items=(data.results||[]).filter(x=>x.poster_path).slice(0,10);if(!items.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">No recommendations available right now.</div>';return}box.innerHTML=items.map(x=>`<a class="media-card" href="index.html?title=movie&id=${encodeURIComponent(x.id)}"><img loading="lazy" src="https://image.tmdb.org/t/p/w342${x.poster_path}" alt="${esc(x.title||'Movie')} poster"><div class="mi"><b>${esc(x.title||'Untitled')}</b><span>${esc((x.release_date||'').slice(0,4)||'Movie')} · ★ ${Number(x.vote_average||0).toFixed(1)}</span></div></a>`).join('')}catch(e){box.innerHTML='<div class="empty" style="grid-column:1/-1">'+esc(e.message)+'</div>'}}
+  $('refreshRecommendations').addEventListener('click',loadRecommendations);
+  async function boot(){
+    const ready=await window.DecanAccount?.ready;
+    sb=ready?.client||window.DecanAccount?.getClient?.()||null;user=ready?.user||window.DecanAccount?.getUser?.()||null;
+    if(!sb||!user){view.classList.add('hidden');gate.classList.remove('hidden');return}
+    gate.classList.add('hidden');view.classList.remove('hidden');await loadProfile();await refreshCoinBalance();await loadNotifications();initialPanel();
+    window.addEventListener('decan:auth-changed',async e=>{if(e.detail?.user){user=e.detail.user;await loadProfile();gate.classList.add('hidden');view.classList.remove('hidden')}else{location.href='index.html'}});
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
