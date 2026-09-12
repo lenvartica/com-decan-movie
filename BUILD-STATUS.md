@@ -1,7 +1,7 @@
-# Build status
+# Decan Movie Android Build Status
 
-The uploaded Decan Movie archive was inspected file-by-file at the archive level, with the web JavaScript and PHP sources syntax-checked, XML resources parsed, configuration inspected, and the Android source assembled from the inspected project.
+The project is prepared for GitHub Actions with a pinned Android Gradle Plugin version, Kotlin plugin version, Gradle 8.9, Java 17, and Android SDK 35.
 
-A full Android Gradle compilation was not executed in this environment because an Android SDK/Gradle installation is not available here. The project is therefore prepared for Android Studio/Gradle build rather than falsely claiming a completed device build.
+The workflow explicitly verifies the root Gradle plugin declarations before running the build.
 
-Before release, perform the device matrix in README.md and rotate the TMDB server token that was present in the uploaded archive.
+The project has not been locally compiled in this environment because an Android SDK installation is not available here. GitHub Actions is configured to install the required Android SDK components before compilation.
