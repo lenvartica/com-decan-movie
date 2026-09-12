@@ -11,13 +11,16 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Decan Movie APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Java 17
@@ -31,11 +34,26 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Build APK
+      - name: Verify project files
+        run: |
+          pwd
+          ls -la
+          test -f settings.gradle.kts
+          test -f build.gradle.kts
+          test -f app/build.gradle.kts
+          echo "Project files verified"
+
+      - name: Verify Gradle configuration
+        run: |
+          cat settings.gradle.kts
+          cat build.gradle.kts
+          echo "Gradle configuration verified"
+
+      - name: Build Debug APK
         run: |
           gradle --no-daemon --stacktrace assembleDebug
 
-      - name: Upload APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: decan-movie-debug-apk
